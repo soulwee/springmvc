@@ -4,9 +4,7 @@ import com.seecen.entity.User;
 import com.seecen.service.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -19,6 +17,8 @@ public class HelloController {
     @Autowired
     HelloService helloService;
 
+
+
     @RequestMapping("index.do")
     public String index(String username,@RequestParam("password") String pass, Map map){
         //这里声明的username
@@ -27,12 +27,19 @@ public class HelloController {
         map.put("username",username);
         return "index";
     }
-    @RequestMapping("in.do")
+    /*
+    * @RequestMapping 的 value、method、params 及 heads
+        分别表示请求 URL、请求方法、请求参数及请求头的映射条
+        件，他们之间是与的关系，联合使用多个条件可让请求映射
+        更加精确化
+    */
+    //@RequestMapping("in")// 相当于 mvc/in.do
+    @RequestMapping(value="in",method = RequestMethod.POST,params = "userName")// 相当于 mvc/in.do
     public String index2(User user){
         //这里声明的username
-        System.out.println(user.getUserName() +"mm:"+user.getPassword());
+        System.out.println(user.getUserName() +",mm:"+user.getPassword());
         System.out.println("hello mvc");
-        return "index";
+        return "index"; //视图为/index.jsp
     }
 
     @ResponseBody

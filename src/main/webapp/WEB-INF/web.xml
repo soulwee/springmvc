@@ -8,9 +8,20 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
         http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+  <!--
+    配置 DispatcherServlet ：DispatcherServlet
+    默认加载 /WEBINF/<servletName-servlet>.xml  的 Spring 配置文件,启动 WEB 层 的 Spring 容器。
+     （所以这里默认加载springmvc-servlet.xml）
+     也可以通过 contextConfigLocation 初始化参数自定义配置文件的位置和名称
+ -->
   <servlet>
     <servlet-name>springmvc</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+   <!-- <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvcabc-servlet.xml</param-value>
+    </init-param>-->
   </servlet>
   <servlet-mapping>
     <servlet-name>springmvc</servlet-name>

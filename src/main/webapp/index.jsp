@@ -2,7 +2,9 @@
 <html>
 <body>
 <h2>Hello ${username}!</h2>
-<form action="in.do">
+<%-- 表单默认提交是get
+        如果写了post requestMapping也要改 --%>
+<form method="post" action="in.do">
     <input name="userName"/><br/>
     <input name="password"/><br/>
     <input type="submit"/>

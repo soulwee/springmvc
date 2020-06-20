@@ -30,3 +30,34 @@ spring三种handlerMapping
 key-value 的形式发送数据给前台
 2.HTTPServletRequest的setAttribute方法
 3.通过@ModelAttribute注解
+
+1.web容器在启动的时候，会扫描每个jar包下的META-INF/services/javax.servlet.ServletContainerInitializer
+2.加载这个文件内指定的类SpringServletContainerInitializer
+3.spring的应用一启动会加载SpringServletContainerInitializer类上有这个注解@HandlesTypes内的
+接口（WebApplicationInitializer）下的所有组件
+4.并且为WebApplicationInitializer组件创建对象（组件不是接口，不是抽象类）
+WebApplicationInitializer下的三个抽象类：
+    1）、AbstractContextLoaderInitializer，创建根容器，createRootApplicationContext()
+    2）、AbstractDispatcherServletInitializer
+        //创建一个web的ioc容器，createServletApplicationContext()
+        WebApplicationContext servletAppContext = createServletApplicationContext();
+        //创建DispatcherServlet
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(servletAppContext);
+        //dispatcherServlet添加到servletAppContext中
+    3）、AbstractAnnotationConfigDispatcherServletInitializer，注解方式的DispatcherServlet初始化器
+        创建根容器：createRootApplicationContext() {
+    		Class<?>[] configClasses = getRootConfigClasses();//传入一个配置类
+    	创建web的ioc容器： createServletApplicationContext()
+    	    Class<?>[] configClasses = getServletConfigClasses();//传入一个配置类
+总结：
+    以注解方式启动springmvc，继承AbstractAnnotationConfigDispatcherServletInitializer：
+    实现抽象方法指定 DispatcherServlet的配置信息
+
+定制SpringMVC，
+1）、@EnableWebMvc开启springMVC定制配置功能
+        替代<mvc:annotation-driven>
+2）、配置组件（视图解析器、视图映射、静态资源映射、拦截器....）
+    extends WebMvcConfigurerAdapter
+3）、
+
+

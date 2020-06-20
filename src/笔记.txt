@@ -1,0 +1,32 @@
+springMVC执行流程:
+1.客户端请求到DispatcherServlet
+2.由DispatcherServlet控制器查询一个或者多个HandlerMapping,找到处理请求的
+Controller
+3.由DispatcherServlet将请求提交到controller
+4.controller调用业务逻辑处理后,返回ModelAndView
+5.DispatcherServlet根据视图解析器找到ModelAndView指定的视图
+6.视图将返回的数据显示
+
+spring三种handlerMapping
+1.BeanNameURLHandlerMapping,默认的,根据bean的name寻找controller
+2.ClassNameHandlerMapping需要手动注册,以类的类名访问,但是首字母小写
+3.SimpleURLHandlerMapping为每个配置了bean的controller类提供简单的访问
+路径,缺点是需要很多配置
+
+注解并发
+使用注解需要开启注解,在springmvc或者spring的配置文件中都可以打开
+@Controller用来表示这是一个控制类,可以指定访问路径或者省略,同时为
+这个类在spring容器中注册一个bean
+@RequestMapping 写在controller下的方法上,用来指定以某个路径访问这个方法
+
+接收传递过来的参数
+1.在方法的形参列表httpServletReqquest,常规的javaee处理方式
+2.形参列表和参数名字相同的变量
+3.形参列表声明任意名字的变量,通过@RequestParam注解指定传递的某个参数的
+4.声明对象方式接收
+
+向页面传递数据的方式
+1.通过返回ModelAndView指定一个Map类型或者ModelMap类型的对象,通过put
+key-value 的形式发送数据给前台
+2.HTTPServletRequest的setAttribute方法
+3.通过@ModelAttribute注解

@@ -1,6 +1,8 @@
 package com.seecen.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -8,11 +10,14 @@ import javax.validation.Valid;
 import com.seecen.dao.DepartmentDao;
 import com.seecen.dao.EmployeeDao;
 import com.seecen.entity.Employee;
+import com.seecen.util.ValidList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,10 +98,17 @@ public class EmployeeController {
     //数据校验 可以重定向校验
     @RequestMapping(value="/autoemp", method=RequestMethod.GET)
     public String autoemp(RedirectAttributes attributes){
+        List<Employee> list = new ArrayList<>();
         Employee e = new Employee();
         e.setEmail("w4");
-        attributes.addFlashAttribute("employee", e);
-        return "redirect:validate";
+        list.add(e);
+        e = new Employee();
+        e.setEmail("w2344");
+        list.add(e);
+        ValidList<Employee> employeeList = new ValidList<>(list);
+        attributes.addFlashAttribute("employeeList", employeeList);
+
+        return "redirect:validate2";
     }
 
     /**
@@ -105,7 +117,7 @@ public class EmployeeController {
      */
     //BindingResult 或 Errors  BindingResult 扩展了 Errors 接口
     @RequestMapping(value="/validate", method=RequestMethod.GET)
-    public String list(@ModelAttribute @Valid Employee employee,Errors result,Model model) {
+    public String list(@ModelAttribute @Valid ArrayList<Employee> validList,Errors result,Model model) {
         if(result.getErrorCount() > 0){
             System.out.println("出错了!");
 
@@ -117,10 +129,24 @@ public class EmployeeController {
 //            map.put("departments", departmentDao.getDepartments());
             return "input";
         }
-        employeeDao.save(employee);
+//        employeeDao.save(employee);
         return "redirect:/emps";
     }
+    @RequestMapping(value="/validate2", method=RequestMethod.GET)
+    public String doSth(@ModelAttribute @Valid ValidList<Employee> employeeList, BindingResult result, Model model){
+        model.addAttribute("error",result);
+        if(result.getErrorCount() > 0){
+            System.out.println("出错了!");
 
+            for(FieldError error:result.getFieldErrors()){
+                System.out.println(error.getField() + ":" + error.getDefaultMessage());
+            }
+            //若验证出错, 则转向定制的页面
+//            map.put("departments", departmentDao.getDepartments());
+            return "empList";
+        }
+        return "redirect:/emps";
+    }
 //	@InitBinder
 //	public void initBinder(WebDataBinder binder){
 //		binder.setDisallowedFields("lastName");

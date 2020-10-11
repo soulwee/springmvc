@@ -44,7 +44,7 @@ public class SpringMVCTest {
 	 * 1). SpringMVC 会使用 value 属性值在 implicitModel 中查找对应的对象, 若存在则会直接传入到目标方法的入参中.
 	 * 2). SpringMVC 会一 value 为 key, POJO 类型的对象为 value, 存入到 request 中. 
 	 */
-	@ModelAttribute
+	/*@ModelAttribute
 	public void getUser(@RequestParam(value="id",required=false) Integer id,
 			Map<String, Object> map){
 		System.out.println("modelAttribute method");
@@ -52,10 +52,9 @@ public class SpringMVCTest {
 			//模拟从数据库中获取对象
 			User user = new User("Tom",12);
 			System.out.println("从数据库中获取一个对象: " + user);
-			
 			map.put("user", user);
 		}
-	}
+	}*/
 	
 	/**
 	 * 运行流程:

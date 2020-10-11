@@ -18,11 +18,13 @@ public class HelloController {
     HelloService helloService;
 
 
-
-    @RequestMapping("index.do")
-    public String index(String username,@RequestParam("password") String pass, Map map){
+    /*
+    @RequestParam  required：是否必须。默认为 true, 表示请求参数中必须包含对应
+    的参数，若不存在，将抛出异常*/
+    @RequestMapping("index")
+    public String index(@RequestParam("username")String username,@RequestParam(value = "password",required = false) String pass, Map map){
         //这里声明的username
-        System.out.println(username +"mm:"+pass);
+        System.out.println(username +",mm:"+pass);
         System.out.println("hello mvc");
         map.put("username",username);
         return "index";
